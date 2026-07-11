@@ -332,66 +332,70 @@
   <!-- DUAL CTA -->
   <section id="cta">
     <div class="cta-half emerald">
-      <span class="cta-eyebrow">SideQuest.BN</span>
-      <h3>Ready to find your next gig?</h3>
-      <p>Join the early access list and be first to know when job categories open in your area.</p>
-      <form class="early-access-form" id="cta-bn-form" action="/api/early-access" method="post">
-        <input type="hidden" name="product" value="bn">
-        <div class="form-field">
-          <label for="bn-name">Name</label>
-          <input id="bn-name" name="name" type="text" autocomplete="name" required minlength="2">
-        </div>
-        <div class="form-field">
-          <label for="bn-email">Email</label>
-          <input id="bn-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="form-field">
-          <label for="bn-role">I am</label>
-          <select id="bn-role" name="role" required>
-            <option value="">Choose one</option>
-            <option value="Job seeker">Job seeker</option>
-            <option value="MSME / hirer">MSME / hirer</option>
-            <option value="Partner">Potential partner</option>
-          </select>
-        </div>
-        <div class="form-field hp-field" aria-hidden="true">
-          <label for="bn-company">Company</label>
-          <input id="bn-company" name="company" type="text" tabindex="-1" autocomplete="off">
-        </div>
-        <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
+      <div class="cta-inner">
+        <span class="cta-eyebrow">SideQuest.BN</span>
+        <h3>Ready to find your next gig?</h3>
+        <p>Join the early access list and be first to know when job categories open in your area.</p>
+        <form class="early-access-form" id="cta-bn-form" action="/api/early-access" method="post">
+          <input type="hidden" name="product" value="bn">
+          <div class="form-field">
+            <label for="bn-name">Name</label>
+            <input id="bn-name" name="name" type="text" autocomplete="name" required minlength="2">
+          </div>
+          <div class="form-field">
+            <label for="bn-email">Email</label>
+            <input id="bn-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="form-field">
+            <label for="bn-role">I am</label>
+            <select id="bn-role" name="role" required>
+              <option value="">Choose one</option>
+              <option value="Job seeker">Job seeker</option>
+              <option value="MSME / hirer">MSME / hirer</option>
+              <option value="Partner">Potential partner</option>
+            </select>
+          </div>
+          <div class="form-field hp-field" aria-hidden="true">
+            <label for="bn-company">Company</label>
+            <input id="bn-company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </div>
     <div class="cta-half orchid">
-      <span class="cta-eyebrow">SideQuest Tourism</span>
-      <h3>Ready to explore Brunei differently?</h3>
-      <p>Join the early access list and help shape which gems and workshops launch first.</p>
-      <form class="early-access-form" id="cta-tourism-form" action="/api/early-access" method="post">
-        <input type="hidden" name="product" value="tourism">
-        <div class="form-field">
-          <label for="tourism-name">Name</label>
-          <input id="tourism-name" name="name" type="text" autocomplete="name" required minlength="2">
-        </div>
-        <div class="form-field">
-          <label for="tourism-email">Email</label>
-          <input id="tourism-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="form-field">
-          <label for="tourism-role">I am</label>
-          <select id="tourism-role" name="role" required>
-            <option value="">Choose one</option>
-            <option value="Traveller / local explorer">Traveller / local explorer</option>
-            <option value="MSME / tour operator">MSME / tour operator</option>
-            <option value="Partner">Potential partner</option>
-          </select>
-        </div>
-        <div class="form-field hp-field" aria-hidden="true">
-          <label for="tourism-company">Company</label>
-          <input id="tourism-company" name="company" type="text" tabindex="-1" autocomplete="off">
-        </div>
-        <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
+      <div class="cta-inner">
+        <span class="cta-eyebrow">SideQuest Tourism</span>
+        <h3>Ready to explore Brunei differently?</h3>
+        <p>Join the early access list and help shape which gems and workshops launch first.</p>
+        <form class="early-access-form" id="cta-tourism-form" action="/api/early-access" method="post">
+          <input type="hidden" name="product" value="tourism">
+          <div class="form-field">
+            <label for="tourism-name">Name</label>
+            <input id="tourism-name" name="name" type="text" autocomplete="name" required minlength="2">
+          </div>
+          <div class="form-field">
+            <label for="tourism-email">Email</label>
+            <input id="tourism-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="form-field">
+            <label for="tourism-role">I am</label>
+            <select id="tourism-role" name="role" required>
+              <option value="">Choose one</option>
+              <option value="Traveller / local explorer">Traveller / local explorer</option>
+              <option value="MSME / tour operator">MSME / tour operator</option>
+              <option value="Partner">Potential partner</option>
+            </select>
+          </div>
+          <div class="form-field hp-field" aria-hidden="true">
+            <label for="tourism-company">Company</label>
+            <input id="tourism-company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </div>
   </section>
 
