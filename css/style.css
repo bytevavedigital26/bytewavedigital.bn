@@ -176,6 +176,7 @@
     display:inline-flex;align-items:center;gap:8px;
     font-size:14.5px;font-weight:600;padding:14px 24px;border-radius:999px;
     transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    border:0;justify-content:center;text-align:center;
   }
   .btn:active{transform:scale(.98);}
   .btn-emerald{background:var(--emerald);color:#fff;}
@@ -318,11 +319,32 @@
   @media(max-width:640px){.cta-half{padding:64px 28px;}}
   .cta-half.emerald{background:var(--emerald);color:#fff;}
   .cta-half.orchid{background:var(--orchid);color:#fff;}
-  .cta-half::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08);right:-90px;bottom:-90px;}
+  .cta-half::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08);right:-90px;bottom:-90px;pointer-events:none;}
+  .cta-half > *{position:relative;z-index:1;}
   .cta-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75);}
   .cta-half h3{margin-top:14px;font-size:clamp(24px,3vw,32px);font-weight:700;max-width:340px;}
   .cta-half p{margin-top:14px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.82);max-width:340px;}
   .cta-half .btn{margin-top:28px;}
+  .early-access-form{margin-top:30px;display:grid;gap:14px;max-width:380px;}
+  .form-field{display:grid;gap:7px;}
+  .form-field label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.78);}
+  .form-field input,
+  .form-field select{
+    width:100%;min-height:48px;border:1px solid rgba(255,255,255,.24);border-radius:8px;
+    background:rgba(255,255,255,.94);color:var(--ink);font:500 14px var(--body);
+    padding:0 14px;outline:none;transition:border-color .2s, box-shadow .2s, background .2s;
+  }
+  .form-field select{appearance:auto;}
+  .form-field input:focus,
+  .form-field select:focus{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.18);background:#fff;}
+  .hp-field{display:none;}
+  .form-submit{width:100%;min-height:50px;margin-top:4px;}
+  .form-submit[disabled]{opacity:.72;cursor:wait;transform:none;}
+  .cta-half .form-status{
+    min-height:22px;margin-top:0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.86);
+  }
+  .form-status.success{color:#fff;}
+  .form-status.error{color:#FFE9A8;}
 
   /* ---------- footer ---------- */
   footer{background:var(--ink);color:rgba(255,255,255,.7);padding:72px 0 28px;}

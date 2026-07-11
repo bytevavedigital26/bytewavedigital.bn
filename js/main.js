@@ -1,57 +1,166 @@
   var reducedMotionGlobal = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // ---- Splash ----
   var splash = document.getElementById('splash');
-  function dismissSplash(){ splash.classList.add('hide'); }
-  if(reducedMotionGlobal){ dismissSplash(); }
-  else {
-    setTimeout(dismissSplash, 2200);
-    document.getElementById('skipSplash').addEventListener('click', dismissSplash);
+  var skipSplash = document.getElementById('skipSplash');
+  function dismissSplash(){
+    if(splash){ splash.classList.add('hide'); }
+  }
+  if(splash){
+    if(reducedMotionGlobal){ dismissSplash(); }
+    else {
+      setTimeout(dismissSplash, 2200);
+      if(skipSplash){ skipSplash.addEventListener('click', dismissSplash); }
+    }
   }
 
   // ---- Nav scroll state + mobile menu ----
   var nav = document.getElementById('nav');
   var mobileMenu = document.getElementById('mobile-menu');
-  document.getElementById('burgerBtn').addEventListener('click', function(){
-    mobileMenu.classList.toggle('open');
-  });
-  mobileMenu.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); });
-  });
+  var burgerBtn = document.getElementById('burgerBtn');
+  if(burgerBtn && mobileMenu){
+    burgerBtn.setAttribute('aria-expanded', 'false');
+    burgerBtn.addEventListener('click', function(){
+      var isOpen = mobileMenu.classList.toggle('open');
+      burgerBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+    mobileMenu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        mobileMenu.classList.remove('open');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        mobileMenu.classList.remove('open');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   // ---- Scroll: nav border + signature wave fill ----
   var fill = document.getElementById('current-fill');
   var dot = document.getElementById('current-dot');
   function onScroll(){
-    nav.classList.toggle('scrolled', window.scrollY > 8);
+    if(nav){ nav.classList.toggle('scrolled', window.scrollY > 8); }
     var doc = document.documentElement;
-    var pct = window.scrollY / (doc.scrollHeight - window.innerHeight);
+    var scrollRange = Math.max(1, doc.scrollHeight - window.innerHeight);
+    var pct = window.scrollY / scrollRange;
     pct = Math.max(0, Math.min(1, pct));
-    fill.style.height = (pct*100) + '%';
-    dot.style.top = (pct*100) + '%';
+    if(fill){ fill.style.height = (pct*100) + '%'; }
+    if(dot){ dot.style.top = (pct*100) + '%'; }
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 
   // ---- Reveal on scroll ----
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
-    });
-  }, {threshold:0.12});
-  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+  }
 
   // ---- How it works toggle ----
   var toggleBn = document.getElementById('toggle-bn');
   var toggleTr = document.getElementById('toggle-tr');
   var flowBn = document.querySelector('.bn-flow');
   var flowTr = document.querySelector('.tr-flow');
-  toggleBn.addEventListener('click', function(){
-    toggleBn.classList.add('active','bn-active'); toggleTr.classList.remove('active','tr-active');
-    flowBn.classList.add('active'); flowTr.classList.remove('active');
+  if(toggleBn && toggleTr && flowBn && flowTr){
+    toggleBn.addEventListener('click', function(){
+      toggleBn.classList.add('active','bn-active'); toggleTr.classList.remove('active','tr-active');
+      flowBn.classList.add('active'); flowTr.classList.remove('active');
+    });
+    toggleTr.addEventListener('click', function(){
+      toggleTr.classList.add('active','tr-active'); toggleBn.classList.remove('active','bn-active');
+      flowTr.classList.add('active'); flowBn.classList.remove('active');
+    });
+  }
+
+  // ---- Early access forms ----
+  function setFormStatus(form, message, state){
+    var status = form.querySelector('.form-status');
+    if(!status) return;
+    status.textContent = message || '';
+    status.classList.remove('success', 'error');
+    if(state){ status.classList.add(state); }
+  }
+
+  function setFormLoading(form, isLoading){
+    var submit = form.querySelector('.form-submit');
+    if(submit){
+      if(!submit.getAttribute('data-idle-text')){
+        submit.setAttribute('data-idle-text', submit.textContent);
+      }
+      submit.disabled = isLoading;
+      submit.textContent = isLoading ? 'Sending...' : submit.getAttribute('data-idle-text');
+    }
+    form.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+  }
+
+  document.querySelectorAll('[data-product-focus]').forEach(function(link){
+    link.addEventListener('click', function(){
+      var targetId = link.getAttribute('href');
+      var target = targetId ? document.querySelector(targetId) : null;
+      if(!target) return;
+      window.setTimeout(function(){
+        var firstInput = target.querySelector('input[name="name"]');
+        if(firstInput){ firstInput.focus({preventScroll:true}); }
+      }, 450);
+    });
   });
-  toggleTr.addEventListener('click', function(){
-    toggleTr.classList.add('active','tr-active'); toggleBn.classList.remove('active','bn-active');
-    flowTr.classList.add('active'); flowBn.classList.remove('active');
+
+  document.querySelectorAll('.early-access-form').forEach(function(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      setFormStatus(form, '', '');
+
+      if(!form.checkValidity()){
+        form.reportValidity();
+        return;
+      }
+
+      if(window.location.protocol === 'file:'){
+        setFormStatus(form, 'Run the site with npm run dev or deploy it before submitting.', 'error');
+        return;
+      }
+
+      var payload = {};
+      new FormData(form).forEach(function(value, key){
+        payload[key] = String(value).trim();
+      });
+
+      setFormLoading(form, true);
+      fetch(form.getAttribute('action') || '/api/early-access', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(function(response){
+        return response.json().catch(function(){ return {}; }).then(function(data){
+          if(!response.ok){
+            throw new Error(data.message || 'The signup could not be sent yet.');
+          }
+          return data;
+        });
+      })
+      .then(function(data){
+        form.reset();
+        setFormStatus(form, data.message || 'Thanks - you are on the early access list.', 'success');
+      })
+      .catch(function(error){
+        setFormStatus(form, error.message || 'Something went wrong. Please try again shortly.', 'error');
+      })
+      .finally(function(){
+        setFormLoading(form, false);
+      });
+    });
   });
 
   // ---- 3D hero wave (Three.js) ----

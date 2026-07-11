@@ -11,8 +11,6 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-</head>
-<body>
 
   <!-- SPLASH -->
   <div id="splash">
@@ -134,7 +132,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E7A5C" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Ratings &amp; reviews that build trust over time</li>
         </ul>
         <div class="p-cta">
-          <a class="btn btn-emerald" href="mailto:Aziq.bytewavedigital@gmail.com?subject=SideQuest.BN%20Early%20Access">Sign Up for Early Access</a>
+          <a class="btn btn-emerald" href="#cta-bn-form" data-product-focus="bn">Sign Up for Early Access</a>
           <span class="p-cta-note">Job seekers &amp; MSMEs welcome</span>
         </div>
       </div>
@@ -185,7 +183,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="#8467A8" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>MSME storefronts &amp; direct bookings</li>
         </ul>
         <div class="p-cta">
-          <a class="btn btn-orchid" href="mailto:Aziq.bytewavedigital@gmail.com?subject=SideQuest%20Tourism%20Early%20Access">Sign Up for Early Access</a>
+          <a class="btn btn-orchid" href="#cta-tourism-form" data-product-focus="tourism">Sign Up for Early Access</a>
           <span class="p-cta-note">Travellers &amp; MSMEs welcome</span>
         </div>
       </div>
@@ -251,18 +249,68 @@
   </section>
 
   <!-- DUAL CTA -->
-  <section id="cta" style="padding:0;">
+  <section id="cta">
     <div class="cta-half emerald">
       <span class="cta-eyebrow">SideQuest.BN</span>
       <h3>Ready to find your next gig?</h3>
       <p>Join the early access list and be first to know when job categories open in your area.</p>
-      <a class="btn btn-white" href="mailto:Aziq.bytewavedigital@gmail.com?subject=SideQuest.BN%20Early%20Access">Sign Up Now →</a>
+      <form class="early-access-form" id="cta-bn-form" action="/api/early-access" method="post">
+        <input type="hidden" name="product" value="bn">
+        <div class="form-field">
+          <label for="bn-name">Name</label>
+          <input id="bn-name" name="name" type="text" autocomplete="name" required minlength="2">
+        </div>
+        <div class="form-field">
+          <label for="bn-email">Email</label>
+          <input id="bn-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="form-field">
+          <label for="bn-role">I am</label>
+          <select id="bn-role" name="role" required>
+            <option value="">Choose one</option>
+            <option value="Job seeker">Job seeker</option>
+            <option value="MSME / hirer">MSME / hirer</option>
+            <option value="Partner">Potential partner</option>
+          </select>
+        </div>
+        <div class="form-field hp-field" aria-hidden="true">
+          <label for="bn-company">Company</label>
+          <input id="bn-company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
     </div>
     <div class="cta-half orchid">
       <span class="cta-eyebrow">SideQuest Tourism</span>
       <h3>Ready to explore Brunei differently?</h3>
       <p>Join the early access list and help shape which gems and workshops launch first.</p>
-      <a class="btn btn-white" href="mailto:Aziq.bytewavedigital@gmail.com?subject=SideQuest%20Tourism%20Early%20Access">Sign Up Now →</a>
+      <form class="early-access-form" id="cta-tourism-form" action="/api/early-access" method="post">
+        <input type="hidden" name="product" value="tourism">
+        <div class="form-field">
+          <label for="tourism-name">Name</label>
+          <input id="tourism-name" name="name" type="text" autocomplete="name" required minlength="2">
+        </div>
+        <div class="form-field">
+          <label for="tourism-email">Email</label>
+          <input id="tourism-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="form-field">
+          <label for="tourism-role">I am</label>
+          <select id="tourism-role" name="role" required>
+            <option value="">Choose one</option>
+            <option value="Traveller / local explorer">Traveller / local explorer</option>
+            <option value="MSME / tour operator">MSME / tour operator</option>
+            <option value="Partner">Potential partner</option>
+          </select>
+        </div>
+        <div class="form-field hp-field" aria-hidden="true">
+          <label for="tourism-company">Company</label>
+          <input id="tourism-company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <button class="btn btn-white form-submit" type="submit">Join Early Access</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </section>
 
