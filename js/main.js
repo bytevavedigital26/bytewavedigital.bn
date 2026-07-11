@@ -176,9 +176,9 @@
     renderer.setSize(w, h, false);
 
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(46, w/h, 0.1, 100);
-    camera.position.set(0, 2.6, 6.4);
-    camera.lookAt(0, -0.1, 0);
+    var camera = new THREE.PerspectiveCamera(52, w/h, 0.1, 100);
+    camera.position.set(0, 2.4, 7.1);
+    camera.lookAt(0, -0.2, 0);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.75));
     var dl = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -190,6 +190,8 @@
 
     var group = new THREE.Group();
     group.rotation.x = -0.95;
+    group.position.y = -0.35;
+    group.scale.set(1.35, 1.35, 1.35);
     scene.add(group);
 
     var cols = 21, rows = 12;
