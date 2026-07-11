@@ -5,7 +5,9 @@ Context file for AI coding agents (OpenCode, Claude Code, etc.) working in this 
 ## What this is
 
 A marketing landing page for **ByteWave Digital Enterprise**, a Brunei-based
-startup with two products: **SideQuest.BN** (gig-work app) and **SideQuest Tourism**
+digital company with four business pillars: product platforms, IT consulting,
+software solutions for startups/MSMEs, and CSR/community engagement. Its first
+two products are **SideQuest.BN** (gig-work app) and **SideQuest Tourism**
 (tourism/discovery app). The frontend is plain HTML/CSS/JS. Early-access form
 submissions are handled by a small Node serverless endpoint for Resend.
 
@@ -20,8 +22,8 @@ submissions are handled by a small Node serverless endpoint for Resend.
 ## File structure
 
 ```
-index.html        All markup, in section order (nav → hero → about → founder →
-                   SideQuest.BN → SideQuest Tourism → problem/solution →
+index.html        All markup, in section order (nav → hero → about → pillars →
+                   founder → SideQuest.BN → SideQuest Tourism → problem/solution →
                    how-it-works → dual CTA → footer)
 css/style.css      All styles. Design tokens are CSS custom properties at the
                    top of the file (:root) — start here for any color/type change.
@@ -33,8 +35,8 @@ api/early-access.js Server-side Resend email endpoint for early-access forms.
 scripts/dev-server.js Local static/API dev server for testing the full flow.
 .env.example       Safe template for required Resend env vars.
 package.json       Scripts only; no frontend framework or bundler.
-assets/            Empty — reserved for a real founder photo, product screenshots,
-                   or a favicon if/when they're added.
+assets/            Founder photo, plus reserved space for product screenshots,
+                   favicon, or other future visual assets.
 ```
 
 ## Design tokens (css/style.css `:root`)
@@ -67,7 +69,6 @@ SideQuest Tourism content should stay orchid/blush, company-level content stays 
 - **Founder contact links:** email and phone links remain direct `mailto:`/`tel:`
   links and should stay usable even if the form endpoint is unavailable.
 - **Known placeholders to eventually replace:**
-  - Founder avatar is initials ("MA") on a gradient, not a real photo
   - Email/phone in the footer and founder section are real values already
     provided by the founder — don't treat these as placeholders
   - Product mockups (`.p-visual` SVGs) are illustrative, not real app screenshots

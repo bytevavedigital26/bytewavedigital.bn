@@ -1,7 +1,9 @@
 # ByteWave Digital Enterprise Landing Page
 
-Marketing landing page for ByteWave Digital Enterprise and its two products,
-**SideQuest.BN** and **SideQuest Tourism**.
+Marketing landing page for ByteWave Digital Enterprise, covering its product
+platforms, IT consulting, software solutions for startups/MSMEs, and
+CSR/community engagement. Its first two products are **SideQuest.BN** and
+**SideQuest Tourism**.
 
 ## Run locally
 
@@ -71,7 +73,6 @@ AGENTS.md               Context file for AI coding agents
 
 ## Before this goes live
 
-- Add a real founder photo if available.
 - Add a favicon.
 - Verify the Resend sending domain.
 - Set the production environment variables on the host.
