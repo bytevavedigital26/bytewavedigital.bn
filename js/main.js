@@ -271,15 +271,18 @@
   // ---- 3D tilt interaction on select cards ----
   if(!reducedMotionGlobal && window.matchMedia('(hover: hover)').matches){
     document.querySelectorAll('.tilt-3d').forEach(function(el){
-      var intensity = 8;
+      var intensity = Number(el.getAttribute('data-tilt-intensity')) || 8;
+      var depth = Number(el.getAttribute('data-tilt-depth')) || 6;
+      var restTransform = 'perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0)';
       el.addEventListener('mousemove', function(e){
         var r = el.getBoundingClientRect();
         var x = (e.clientX - r.left) / r.width - 0.5;
         var y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transform = 'perspective(900px) rotateY(' + (x*intensity) + 'deg) rotateX(' + (-y*intensity) + 'deg) translateZ(6px)';
+        el.style.transform = 'perspective(900px) rotateY(' + (x*intensity) + 'deg) rotateX(' + (-y*intensity) + 'deg) translateZ(' + depth + 'px)';
       });
       el.addEventListener('mouseleave', function(){
-        el.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0)';
+        el.style.transform = restTransform;
       });
+      el.addEventListener('blur', function(){ el.style.transform = restTransform; }, true);
     });
   }

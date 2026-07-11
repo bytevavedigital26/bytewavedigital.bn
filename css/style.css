@@ -249,15 +249,34 @@
     position:relative;overflow:hidden;
     min-height:340px;padding:22px 20px 20px;
     background:var(--cloud);border:1px solid var(--line);border-radius:16px;
+    box-shadow:0 1px 0 rgba(11,42,67,.04);
   }
   .pillar-card::before{
     content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--ink);
   }
+  .pillar-card::after{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(135deg, rgba(255,255,255,.64), transparent 42%);
+    opacity:0;transition:opacity .25s ease;
+  }
+  .pillar-card:hover,
+  .pillar-card:focus-within{
+    border-color:rgba(11,42,67,.22);
+    box-shadow:0 18px 40px rgba(11,42,67,.12);
+  }
+  .pillar-card:hover::after,
+  .pillar-card:focus-within::after{opacity:1;}
   .pillar-icon{
     width:42px;height:42px;border-radius:12px;
     display:flex;align-items:center;justify-content:center;
     background:#fff;color:var(--ink);
     box-shadow:0 10px 24px rgba(11,42,67,.08);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .pillar-card:hover .pillar-icon,
+  .pillar-card:focus-within .pillar-icon{
+    transform:translateY(-3px) scale(1.04);
+    box-shadow:0 14px 28px rgba(11,42,67,.12);
   }
   .pillar-icon svg{width:22px;height:22px;}
   .pillar-kicker{
@@ -286,6 +305,13 @@
   }
   @media(max-width:700px){.pillar-contact{align-items:flex-start;flex-direction:column;}}
   .pillar-contact p{font-size:16px;line-height:1.55;color:var(--ink-soft);}
+
+  @media (prefers-reduced-motion: reduce){
+    .pillar-card::after,
+    .pillar-icon{transition:none;}
+    .pillar-card:hover .pillar-icon,
+    .pillar-card:focus-within .pillar-icon{transform:none;}
+  }
 
   /* ---------- founder ---------- */
   #founder{background:var(--white);}
