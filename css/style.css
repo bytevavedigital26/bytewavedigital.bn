@@ -246,7 +246,9 @@
   @media(max-width:620px){.pillars-grid{grid-template-columns:1fr;}}
   .pillar-card{
     position:relative;overflow:hidden;
-    display:grid;grid-row:span 4;grid-template-rows:subgrid;
+    display:grid;grid-row:span 4;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: subgrid;
     min-height:350px;padding:24px 22px 22px;
     background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:16px;
     backdrop-filter:blur(8px);
