@@ -286,3 +286,40 @@
       el.addEventListener('blur', function(){ el.style.transform = restTransform; }, true);
     });
   }
+
+  // ---- Mobile FAB: show after hero, smooth scroll to founder/CTA ----
+  (function(){
+    var fab = document.getElementById('mobile-fab');
+    if(!fab) return;
+
+    var hero = document.getElementById('hero');
+    var founder = document.getElementById('founder');
+
+    // Show/hide FAB based on scroll position (only on mobile viewports)
+    function updateFabVisibility(){
+      if(window.innerWidth > 860){ fab.classList.remove('is-visible'); return; }
+      if(!hero) return;
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      // Show after scrolling past the hero
+      if(heroBottom < 0){
+        fab.classList.add('is-visible');
+      } else {
+        fab.classList.remove('is-visible');
+      }
+    }
+
+    window.addEventListener('scroll', updateFabVisibility, {passive:true});
+    window.addEventListener('resize', updateFabVisibility);
+    updateFabVisibility();
+
+    // Smooth scroll with nav offset
+    fab.addEventListener('click', function(e){
+      e.preventDefault();
+      var target = founder || document.getElementById('cta');
+      if(!target) return;
+      var navHeight = nav ? nav.offsetHeight : 0;
+      var top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+      window.scrollTo({top:top, behavior: reducedMotionGlobal ? 'auto' : 'smooth'});
+    });
+  })();
+
