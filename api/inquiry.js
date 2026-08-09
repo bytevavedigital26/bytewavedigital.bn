@@ -8,11 +8,6 @@ const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 8;
 const recentRequests = new Map();
 
-const PRODUCTS = {
-  bn: 'SideQuest.BN',
-  tourism: 'SideQuest Tourism'
-};
-
 function sendJson(res, statusCode, payload) {
   res.statusCode = statusCode;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -136,10 +131,12 @@ async function parsePayload(req) {
 
 function buildEmailContent(submission) {
   var rows = [
-    ['Product', submission.productName],
     ['Name', submission.name],
     ['Email', submission.email],
-    ['Audience', submission.role],
+    ['Company', submission.company || 'Not provided'],
+    ['Service', submission.service],
+    ['Timeline', submission.timeline],
+    ['Message', submission.message],
     ['Submitted', new Date().toISOString()]
   ];
 
@@ -157,12 +154,12 @@ function buildEmailContent(submission) {
 
   return {
     html: '<div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#0B2A43;">' +
-      '<h1 style="font-size:20px;margin:0 0 16px;">New ByteWave early access signup</h1>' +
+      '<h1 style="font-size:20px;margin:0 0 16px;">New ByteWave inquiry</h1>' +
       '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid #e6e2dc;">' +
       htmlRows +
       '</table>' +
       '</div>',
-    text: 'New ByteWave early access signup\n\n' + text
+    text: 'New ByteWave inquiry\n\n' + text
   };
 }
 
@@ -179,7 +176,7 @@ async function sendWithResend(submission) {
   var content = buildEmailContent(submission);
   var idempotencyKey = crypto
     .createHash('sha256')
-    .update(submission.product + ':' + submission.email + ':' + Date.now())
+    .update(submission.email + ':' + submission.service + ':' + Date.now())
     .digest('hex');
 
   var response = await fetch(RESEND_EMAILS_URL, {
@@ -193,20 +190,20 @@ async function sendWithResend(submission) {
     body: JSON.stringify({
       from: process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL,
       to: getRecipients(),
-      subject: 'New ' + submission.productName + ' early access signup',
+      subject: 'New ByteWave inquiry: ' + submission.service,
       html: content.html,
       text: content.text,
       reply_to: submission.email,
       tags: [
-        { name: 'source', value: 'bytewave_landing' },
-        { name: 'product', value: submission.product }
+        { name: 'source', value: 'bytewave_site' },
+        { name: 'type', value: 'inquiry' }
       ]
     })
   });
 
   var data = await response.json().catch(function() { return {}; });
   if(!response.ok) {
-    console.error('Resend email failed:', response.status, data);
+    console.error('Resend inquiry failed:', response.status, data);
     throw Object.assign(new Error('Email delivery failed. Please use the email or phone link instead.'), { statusCode: 502 });
   }
 
@@ -238,18 +235,15 @@ module.exports = async function handler(req, res) {
     var payload = await parsePayload(req);
 
     if(clean(payload.company, 80)) {
-      return sendJson(res, 200, { message: 'Thanks - you are on the early access list.' });
+      return sendJson(res, 200, { message: 'Thanks - we received your inquiry.' });
     }
 
-    var product = clean(payload.product, 30).toLowerCase();
-    var productName = PRODUCTS[product];
     var name = clean(payload.name, 120);
     var email = clean(payload.email, 254).toLowerCase();
-    var role = clean(payload.role, 120);
-
-    if(!productName) {
-      return sendJson(res, 400, { message: 'Choose a valid ByteWave product.' });
-    }
+    var organization = clean(payload.organization, 120);
+    var service = clean(payload.service, 120);
+    var timeline = clean(payload.timeline, 120);
+    var message = clean(payload.message, 3000);
 
     if(name.length < 2) {
       return sendJson(res, 400, { message: 'Enter your name.' });
@@ -259,13 +253,28 @@ module.exports = async function handler(req, res) {
       return sendJson(res, 400, { message: 'Enter a valid email address.' });
     }
 
-    if(!role) {
-      return sendJson(res, 400, { message: 'Choose the option that best describes you.' });
+    if(!service) {
+      return sendJson(res, 400, { message: 'Choose the type of work you need.' });
     }
 
-    await sendWithResend({ product: product, productName: productName, name: name, email: email, role: role });
+    if(!timeline) {
+      return sendJson(res, 400, { message: 'Choose your timeline.' });
+    }
 
-    return sendJson(res, 200, { message: 'Thanks - you are on the early access list.' });
+    if(message.length < 10) {
+      return sendJson(res, 400, { message: 'Add a few more details about the project.' });
+    }
+
+    await sendWithResend({
+      name: name,
+      email: email,
+      company: organization,
+      service: service,
+      timeline: timeline,
+      message: message
+    });
+
+    return sendJson(res, 200, { message: 'Thanks - we received your inquiry.' });
   } catch (error) {
     var statusCode = error.statusCode || 500;
     if(statusCode >= 500) {

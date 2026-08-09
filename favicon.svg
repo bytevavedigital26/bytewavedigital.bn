@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ByteWave Digital Enterprise favicon">
+  <rect width="64" height="64" rx="16" fill="#0B2A43"/>
+  <path d="M12 34c5 0 5-16 10-16s5 16 10 16 5-16 10-16 5 16 10 16 5-16 10-16" fill="none" stroke="#E8A83C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 43c5 0 5-10 10-10s5 10 10 10 5-10 10-10 5 10 10 10 5-10 10-10" fill="none" stroke="#0E7A5C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+</svg>

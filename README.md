@@ -1,9 +1,25 @@
-# ByteWave Digital Enterprise Landing Page
+# ByteWave Digital Enterprise Website
 
-Marketing landing page for ByteWave Digital Enterprise, covering its product
-platforms, IT consulting, software solutions for startups/MSMEs, and
-CSR/community engagement. Its first two products are **SideQuest.BN** and
+Marketing website for ByteWave Digital Enterprise, covering its product
+platforms, IT consulting, software solutions for startups/MSMEs, articles, and
+community-focused technology. Its first two products are **SideQuest.BN** and
 **SideQuest Tourism**.
+
+## Pages
+
+- `index.html` - homepage
+- `about.html` - company story, founder, and roadmap
+- `services.html` - consulting and software services
+- `projects.html` - featured products and future software work
+- `articles.html` - article index
+- `contact.html` - company contact, direct details, and inquiry form
+- `article-brunei-first.html`
+- `article-msme-software-partner.html`
+- `article-tourism-tech.html`
+- `case-study-service-booking.html`
+- `case-study-operations-portal.html`
+- `favicon.svg`, `robots.txt`, `sitemap.xml`
+- `api/inquiry.js` - general work-with-us inquiry endpoint
 
 ## Run locally
 
@@ -31,6 +47,9 @@ RESEND_FROM_EMAIL="ByteWave Digital <hello@your-verified-domain.com>"
 RESEND_TO_EMAIL="Aziq.bytewavedigital@gmail.com"
 PORT=3000
 ```
+
+The general inquiry form posts to `api/inquiry.js` and uses the same Resend
+variables.
 
 For production, add the same env vars in your hosting dashboard. Use a verified
 Resend domain for `RESEND_FROM_EMAIL`; `onboarding@resend.dev` is only a testing
@@ -73,9 +92,9 @@ AGENTS.md               Context file for AI coding agents
 
 ## Before this goes live
 
-- Add a favicon.
 - Verify the Resend sending domain.
 - Set the production environment variables on the host.
+- Add a favicon when you are ready to lock the final branding.
 
 ## Stack
 

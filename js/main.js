@@ -1,4 +1,15 @@
   var reducedMotionGlobal = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Active navigation state ----
+  (function(){
+    var path = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('#nav .nav-links a').forEach(function(link){
+      var href = link.getAttribute('href') || '';
+      if(href === path || (path === '' && href === 'index.html') || (path === 'index.html' && href === 'index.html')){
+        link.classList.add('active');
+      }
+    });
+  })();
   // ---- Splash ----
   var splash = document.getElementById('splash');
   var skipSplash = document.getElementById('skipSplash');
@@ -113,7 +124,7 @@
     });
   });
 
-  document.querySelectorAll('.early-access-form').forEach(function(form){
+  function submitAjaxForm(form, successText, errorText){
     form.addEventListener('submit', function(e){
       e.preventDefault();
       setFormStatus(form, '', '');
@@ -152,15 +163,23 @@
       })
       .then(function(data){
         form.reset();
-        setFormStatus(form, data.message || 'Thanks - you are on the early access list.', 'success');
+        setFormStatus(form, data.message || successText, 'success');
       })
       .catch(function(error){
-        setFormStatus(form, error.message || 'Something went wrong. Please try again shortly.', 'error');
+        setFormStatus(form, error.message || errorText, 'error');
       })
       .finally(function(){
         setFormLoading(form, false);
       });
     });
+  }
+
+  document.querySelectorAll('.early-access-form').forEach(function(form){
+    submitAjaxForm(form, 'Thanks - you are on the early access list.', 'Something went wrong. Please try again shortly.');
+  });
+
+  document.querySelectorAll('.inquiry-form').forEach(function(form){
+    submitAjaxForm(form, 'Thanks - your inquiry has been sent.', 'Something went wrong. Please try again shortly.');
   });
 
   // ---- 3D hero wave (Three.js) ----
@@ -322,4 +341,3 @@
       window.scrollTo({top:top, behavior: reducedMotionGlobal ? 'auto' : 'smooth'});
     });
   })();
-

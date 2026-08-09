@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 
 const earlyAccessHandler = require('../api/early-access');
+const inquiryHandler = require('../api/inquiry');
 
 const root = path.resolve(__dirname, '..');
 const preferredPort = Number(process.env.PORT || 3000);
@@ -14,7 +15,9 @@ const mimeTypes = {
   '.jpg': 'image/jpeg',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
   '.png': 'image/png',
+  '.xml': 'application/xml; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp'
 };
@@ -45,6 +48,11 @@ function loadEnvFile(filename) {
 function send(res, statusCode, body, contentType) {
   res.statusCode = statusCode;
   res.setHeader('Content-Type', contentType || 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.end(body);
 }
 
@@ -75,16 +83,21 @@ function serveStatic(req, res, pathname) {
     return send(res, 404, 'Not found');
   }
 
-  fs.stat(filePath, function(error, stat) {
-    if(error || !stat.isFile()) {
-      return send(res, 404, 'Not found');
-    }
+    fs.stat(filePath, function(error, stat) {
+      if(error || !stat.isFile()) {
+        return send(res, 404, 'Not found');
+      }
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', mimeTypes[path.extname(filePath).toLowerCase()] || 'application/octet-stream');
-    fs.createReadStream(filePath).pipe(res);
-  });
-}
+      res.statusCode = 200;
+      res.setHeader('Content-Type', mimeTypes[path.extname(filePath).toLowerCase()] || 'application/octet-stream');
+      res.setHeader('Cache-Control', 'no-store');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('X-Frame-Options', 'DENY');
+      res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+      res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+      fs.createReadStream(filePath).pipe(res);
+    });
+  }
 
 loadEnvFile('.env.local');
 loadEnvFile('.env');
@@ -94,6 +107,14 @@ const server = http.createServer(function(req, res) {
 
   if(requestUrl.pathname === '/api/early-access') {
     Promise.resolve(earlyAccessHandler(req, res)).catch(function(error) {
+      console.error(error);
+      send(res, 500, JSON.stringify({ message: 'Something went wrong.' }), 'application/json; charset=utf-8');
+    });
+    return;
+  }
+
+  if(requestUrl.pathname === '/api/inquiry') {
+    Promise.resolve(inquiryHandler(req, res)).catch(function(error) {
       console.error(error);
       send(res, 500, JSON.stringify({ message: 'Something went wrong.' }), 'application/json; charset=utf-8');
     });
